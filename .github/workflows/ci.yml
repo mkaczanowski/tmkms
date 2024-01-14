@@ -141,13 +141,20 @@ jobs:
       - name: Install libudev-dev
         run: sudo apt-get update && sudo apt-get install libudev-dev
 
+      # used by integration test to configure running hashicorp vault container
+      - name: Install HashiCorp vault CLI
+        run: wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg &&
+          gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint &&
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list &&
+          sudo apt update && sudo apt install vault
+
       - name: Run cargo test
         uses: actions-rs/cargo@v1
         env:
           NO_VAULT_SERVER: true
         with:
           command: test
-          args: --all-features -- --test-threads 1 --nocapture
+          args: --all-features -- --test-threads 1
 
   validate:
     name: Validate against test harness
