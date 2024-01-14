@@ -314,10 +314,13 @@ impl KmsProcess {
         ];
 
         // the first import will succeed, the latter won't (because key is already uploaded)
-        let _ = Command::new(KMS_EXE_PATH)
+        let s = Command::new(KMS_EXE_PATH)
             .env("VAULT_TOKEN", "test")
             .args(args)
             .output();
+
+        println!("------------- ADD KEY ---------------");
+        println!("{:?}", s);
     }
 }
 
@@ -783,9 +786,12 @@ fn start_vault() {
             .expect("Failed to start vault server");
     }
 
-    Command::new("bash")
+    let s = Command::new("bash")
         .arg("-c")
         .arg("./tests/support/start_vault.sh setup http 8400")
         .output()
         .expect("Failed to initalize vault server");
+
+    println!("------------- ENABLE TRANSIT ---------------");
+    println!("{:?}", s);
 }

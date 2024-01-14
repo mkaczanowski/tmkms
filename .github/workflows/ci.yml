@@ -147,7 +147,7 @@ jobs:
           NO_VAULT_SERVER: true
         with:
           command: test
-          args: --all-features -- --test-threads 1
+          args: --all-features -- --test-threads 1 --nocapture
 
   validate:
     name: Validate against test harness
