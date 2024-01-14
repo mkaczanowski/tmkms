@@ -144,7 +144,7 @@ jobs:
       - name: Run cargo test
         uses: actions-rs/cargo@v1
         env:
-          - NO_VAULT_SERVER=true
+          NO_VAULT_SERVER: true
         with:
           command: test
           args: --all-features -- --test-threads 1
