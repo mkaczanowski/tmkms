@@ -11,6 +11,7 @@ env:
 
 jobs:
   integration:
+    runs-on: ubuntu-latest
     services:
       vault:
         image: vault:1.13.3
@@ -184,6 +185,8 @@ jobs:
 
       - name: Run cargo build
         uses: actions-rs/cargo@v1
+        env:
+          NO_VAULT_SERVER: true
         with:
           command: build
           args: --features=softsign --release
